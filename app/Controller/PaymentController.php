@@ -90,6 +90,14 @@ class PaymentController
 
         $list_histori_transaksi = $this->paymentService->getAllHistoryTransaksi($_POST['nim']);
 
+        for ($i = 0; $i < count($list_histori_transaksi); $i++) {
+            $this->paymentService->updateHistoryTransaksi(
+                $list_histori_transaksi[$i]['id_pembayaran_kuliah'],
+                $list_histori_transaksi[$i]['id_order'],
+                $this->server_key,
+            );
+        }
+
         echo json_encode($list_histori_transaksi);
     }
 

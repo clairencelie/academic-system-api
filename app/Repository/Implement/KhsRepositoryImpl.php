@@ -122,7 +122,7 @@ class KhsRepositoryImpl implements KhsRepositoryInterface
         // if ($statement->rowCount() > 0) {
         //     return true;
         // }
-        
+
         return true;
     }
 
@@ -196,7 +196,7 @@ class KhsRepositoryImpl implements KhsRepositoryInterface
         return false;
     }
 
-    public function getTranskrip(string $id): array
+    public function getTranskrip(string $nim): array
     {
         $transkrip = [];
 
@@ -207,7 +207,7 @@ class KhsRepositoryImpl implements KhsRepositoryInterface
         SQL;
 
         $statement = $this->conn->prepare($sql);
-        $statement->bindParam('nim', $id);
+        $statement->bindParam('nim', $nim);
 
         $statement->execute();
 
@@ -252,8 +252,10 @@ class KhsRepositoryImpl implements KhsRepositoryInterface
                         nilai.angka_kualitas,
                         nilai.status,
                         nilai.tahun_akademik,
-                        nilai.semester
+                        nilai.semester,
+                        kartu_hasil_studi.semester as semester_angka
                 FROM nilai
+                JOIN kartu_hasil_studi ON (kartu_hasil_studi.id_khs = nilai.id_khs)
                 JOIN mata_kuliah as mk ON (mk.id_mata_kuliah = nilai.id_mata_kuliah)
                 WHERE nilai.id_khs = :id_khs;
             SQL;
@@ -273,6 +275,97 @@ class KhsRepositoryImpl implements KhsRepositoryInterface
                         $nilai[] = $data;
                     }
                 }
+                $transkrip['nilai'] = $nilai;
+            } else {
+                $transkrip['khs'] = [];
+                $transkrip['nilai'] = [];
+            }
+        }
+
+        return $transkrip;
+    }
+
+    public function getTranskripPerSemester(string $nim): array
+    {
+        $transkrip = [];
+
+        $sql = <<<SQL
+            SELECT *
+            FROM transkrip_nilai_mhs
+            WHERE nim = :nim
+        SQL;
+
+        $statement = $this->conn->prepare($sql);
+        $statement->bindParam('nim', $nim);
+
+        $statement->execute();
+
+        if ($statement->rowCount() == 1) {
+            $transkrip_from_db = $statement->fetch(PDO::FETCH_ASSOC);
+            $transkrip["transkrip"] = TranskripNilai::createTranskrip($transkrip_from_db)->jsonSerialize();
+
+            $id_transkrip = $transkrip["transkrip"]["id_transkrip_nilai"];
+
+            $sql = <<<SQL
+                SELECT *
+                FROM kartu_hasil_studi
+                WHERE id_transkrip_nilai = :id_transkrip_nilai;
+            SQL;
+
+            $statement = $this->conn->prepare($sql);
+
+            $statement->bindParam('id_transkrip_nilai', $id_transkrip);
+
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+
+                $khs_list = [];
+
+                while ($data = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    $khs = KartuHasilStudi::createKHS($data)->jsonSerialize();
+                    $khs_list[] = $khs;
+                }
+
+                $transkrip['khs'] = $khs_list;
+
+                $sql = <<<SQL
+                SELECT nilai.id_mata_kuliah,
+                        mk.nama_mata_kuliah,
+                        mk.jumlah_sks,
+                        nilai.id_nilai,
+                        nilai.kehadiran,
+                        nilai.tugas,
+                        nilai.uts,
+                        nilai.uas,
+                        nilai.nilai,
+                        nilai.angka_kualitas,
+                        nilai.status,
+                        nilai.tahun_akademik,
+                        nilai.semester as semester_kata,
+                        kartu_hasil_studi.semester
+                FROM nilai
+                JOIN kartu_hasil_studi ON (kartu_hasil_studi.id_khs = nilai.id_khs)
+                JOIN mata_kuliah as mk ON (mk.id_mata_kuliah = nilai.id_mata_kuliah)
+                WHERE nilai.id_khs = :id_khs;
+            SQL;
+
+                $list_khs = $transkrip['khs'];
+
+                $nilai = [];
+
+                for ($i = 0; $i < count($transkrip['khs']); $i++) {
+                    $id_khs = $list_khs[$i]["id_khs"];
+                    $statement = $this->conn->prepare($sql);
+                    $statement->bindParam('id_khs', $id_khs);
+
+                    $statement->execute();
+
+                    while ($data = $statement->fetch(PDO::FETCH_ASSOC)) {
+                        $nilai[] = $data;
+                    }
+                }
+
                 $transkrip['nilai'] = $nilai;
             } else {
                 $transkrip['khs'] = [];

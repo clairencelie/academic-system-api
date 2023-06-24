@@ -88,6 +88,9 @@ Router::add("POST", "/update/krs", KrsController::class, "updateKrs");
 // Get Transkrip 
 Router::add("POST", "/transkrip", KhsController::class, "getTranskrip");
 
+// Get Transkrip 
+Router::add("POST", "/transkrip_terinci", KhsController::class, "getTranskripPerSemester");
+
 // create Transkrip 
 Router::add("POST", "/create/transkrip", KhsController::class, "createTranskrip");
 

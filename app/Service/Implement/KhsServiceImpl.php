@@ -107,9 +107,14 @@ class KhsServiceImpl implements KhsServiceInterface
         return $this->khs_repository->createKhs($id_transkrip, $khs);
     }
 
-    public function getTranskrip(string $id): array
+    public function getTranskrip(string $nim): array
     {
-        return $this->khs_repository->getTranskrip($id);
+        return $this->khs_repository->getTranskrip($nim);
+    }
+
+    public function getTranskripPerSemester(string $nim): array
+    {
+        return $this->khs_repository->getTranskripPerSemester($nim);
     }
 
     public function getKhs(string $id_transkrip, string $semester): ?KartuHasilStudi

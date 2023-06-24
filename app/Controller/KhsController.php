@@ -34,6 +34,23 @@ class KhsController
         echo json_encode($transkrip);
     }
 
+    public function getTranskripPerSemester(): void
+    {
+        if (!isset($_POST['nim'])) {
+            http_response_code(400);
+            exit();
+        }
+
+        $transkrip = $this->service->getTranskripPerSemester($_POST['nim']);
+
+        if ($transkrip == []) {
+            http_response_code(404);
+            exit;
+        }
+
+        echo json_encode($transkrip);
+    }
+
 
     public function getKhs(): void
     {

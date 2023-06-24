@@ -20,7 +20,9 @@ interface KhsRepositoryInterface
 
     public function createKhs(string $id_transkrip, KartuHasilStudi $khs): bool;
 
-    public function getTranskrip(string $id): array;
+    public function getTranskrip(string $nim): array;
+
+    public function getTranskripPerSemester(string $nim): array;
 
     public function getKhsById(string $id_khs): array;
 

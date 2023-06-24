@@ -18,7 +18,9 @@ interface KhsServiceInterface
 
     public function createKhs(string $id_transkrip, KartuHasilStudi $khs): bool;
 
-    public function getTranskrip(string $id): array;
+    public function getTranskrip(string $nim): array;
+
+    public function getTranskripPerSemester(string $nim): array;
 
     public function getKhs(string $id_transkrip, string $semester): ?KartuHasilStudi;
 

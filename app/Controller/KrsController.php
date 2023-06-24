@@ -236,12 +236,16 @@ class KrsController
                          * SKS = Rp.165.000 * Jumlah SKS
                          * BPP = Rp.1.300.000
                          * Registrasi = Rp.400.000
+                         * Admin = Rp.4000
+                         * DP KRS = Rp. -1.000.000
                          * DP KRS (Sudah isi KRS berarti sudah membayar DP KRS) = Rp. -1.000.000
                          */
                         $totalBiayaSKS = 165000 * $kredit_diambil;
                         $bpp = 1300000;
                         $registrasi = 400000;
-                        $totalTagihan = $totalBiayaSKS + $bpp + $registrasi;
+                        $admin = 4000;
+                        $potonganDpKrs = -1000000;
+                        $totalTagihan = $totalBiayaSKS + $bpp + $registrasi + $admin + $potonganDpKrs;
 
                         $tagihanSemester = new TagihanPerkuliahan(
                             idPembayaranKuliah: UniqueIdGenerator::generate_uuid(),
@@ -278,13 +282,14 @@ class KrsController
                                     hargaItem: '1300000',
                                     totalHargaItem: '1300000',
                                 );
-                                // Rincian Biaya Admin
-                                $rincianBpp = new RincianTagihan(
+                                
+                                // Rincian Biaya Registrasi
+                                $rincianBiayaRegistrasi = new RincianTagihan(
                                     idTagihanPerkuliahan: $dataTagihanSemesterMhs->getIdTagihanPerkuliahan(),
-                                    item: 'BPP',
+                                    item: 'Registrasi',
                                     jumlahItem: '1',
-                                    hargaItem: '1300000',
-                                    totalHargaItem: '1300000',
+                                    hargaItem: '400000',
+                                    totalHargaItem: '400000',
                                 );
 
                                 // Rincian Biaya Admin
@@ -296,20 +301,39 @@ class KrsController
                                     totalHargaItem: '4000',
                                 );
 
+                                // Rincian Biaya Admin
+                                $rincianPotonganUangMuka = new RincianTagihan(
+                                    idTagihanPerkuliahan: $dataTagihanSemesterMhs->getIdTagihanPerkuliahan(),
+                                    item: 'Potongan Uang Muka KRS',
+                                    jumlahItem: '1',
+                                    hargaItem: $potonganDpKrs,
+                                    totalHargaItem: $potonganDpKrs,
+                                );
+
                                 $insertRincianSks = $this->paymentService->insertRincianTagihan($rincianSks);
                                 $insertRincianBpp = $this->paymentService->insertRincianTagihan($rincianBpp);
+                                $insertRincianRegistrasi = $this->paymentService->insertRincianTagihan($rincianBiayaRegistrasi);
                                 $insertRincianAdminDPKrs = $this->paymentService->insertRincianTagihan($rincianAdminSemester);
+                                $insertRincianPotonganDPKrs = $this->paymentService->insertRincianTagihan($rincianPotonganUangMuka);
 
                                 if ($insertRincianSks) {
                                     if ($insertRincianBpp) {
-                                        if ($insertRincianAdminDPKrs) {
-                                            // commit KRS
-                                            $this->pdo->commit();
-                                            echo json_encode([
-                                                "message" => "krs commited successfuly",
-                                            ]);
+                                        if ($insertRincianRegistrasi) {
+                                            if ($insertRincianAdminDPKrs) {
+                                                if ($insertRincianPotonganDPKrs) {
+                                                    // commit KRS
+                                                    $this->pdo->commit();
+                                                    echo json_encode([
+                                                        "message" => "krs commited successfuly",
+                                                    ]);
+                                                } else {
+                                                    throw new Exception('Gagal insert rincian potongan DP Krs');
+                                                }
+                                            } else {
+                                                throw new Exception('Gagal insert rincian biaya admin');
+                                            }
                                         } else {
-                                            throw new Exception('Gagal insert rincian biaya admin');
+                                            throw new Exception('Gagal insert rincian biaya registrasi');
                                         }
                                     } else {
                                         throw new Exception('Gagal insert rincian bpp');
