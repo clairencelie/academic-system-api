@@ -67,8 +67,8 @@ Router::add("POST", "/delete/schedule", ScheduleController::class, "removeSchedu
 // Get Krs Schedule
 Router::add("GET", "/krs_schedule", KrsController::class, "getKrsSchedule", [AuthMiddleware::class]);
 
-// Set Krs Schedule
-Router::add("POST", "/update/krs_schedule", KrsController::class, "setKrsSchedule");
+// // Set Krs Schedule
+// Router::add("POST", "/update/krs_schedule", KrsController::class, "setKrsSchedule");
 
 // create Krs 
 Router::add("POST", "/create/krs", KrsController::class, "createStudentKrs");

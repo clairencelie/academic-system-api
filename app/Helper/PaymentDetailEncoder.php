@@ -13,7 +13,6 @@ class PaymentDetailEncoder
         $phoneNumber = $mhs->getPhoneNumber();
 
         return json_encode([
-            "payment_type" => "bank_transfer",
             "transaction_details" => [
                 "order_id" => $id_pembayaran_kuliah,
                 "gross_amount" => $gross_amount
@@ -24,8 +23,9 @@ class PaymentDetailEncoder
                 "last_name" => "",
                 "phone" => $phoneNumber
             ],
+            "payment_type" => "bank_transfer",
             "bank_transfer" => [
-                "bank" => "bca"
+                "bank" => "bni"
             ]
         ]);
     }

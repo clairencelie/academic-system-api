@@ -50,23 +50,23 @@ class KrsController
         echo json_encode($jadwal_krs);
     }
 
-    public function setKrsSchedule(): void
-    {
-        if (!isset($_POST['starts_date']) || !isset($_POST['ends_date']) || !isset($_POST['semester']) || !isset($_POST['academic_year'])) {
-            http_response_code(400);
-            exit();
-        }
+    // public function setKrsSchedule(): void
+    // {
+    //     if (!isset($_POST['starts_date']) || !isset($_POST['ends_date']) || !isset($_POST['semester']) || !isset($_POST['academic_year'])) {
+    //         http_response_code(400);
+    //         exit();
+    //     }
 
-        // Call service
-        $condition = $this->krs_service->setKrsSchedule($_POST['starts_date'], $_POST['ends_date'], $_POST['semester'], $_POST['academic_year']);
+    //     // Call service
+    //     $condition = $this->krs_service->setKrsSchedule($_POST['starts_date'], $_POST['ends_date'], $_POST['semester'], $_POST['academic_year']);
 
-        if ($condition) {
-            echo json_encode(["message" => "krs schedule updated"]);
-        } else {
-            http_response_code(409);
-            echo json_encode(["message" => "krs schedule update failed"]);
-        }
-    }
+    //     if ($condition) {
+    //         echo json_encode(["message" => "krs schedule updated"]);
+    //     } else {
+    //         http_response_code(409);
+    //         echo json_encode(["message" => "krs schedule update failed"]);
+    //     }
+    // }
 
     public function getStudentKrs(): void
     {

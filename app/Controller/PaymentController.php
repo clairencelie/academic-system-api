@@ -16,6 +16,7 @@ class PaymentController
 {
     private string $server_key;
     private $url = 'https://api.sandbox.midtrans.com/v2/charge';
+    // private $url = 'https://api.midtrans.com/v2/charge';
 
     private PaymentServiceImpl $paymentService;
     private UserRepositoryImpl $userRepo;
@@ -98,7 +99,9 @@ class PaymentController
             );
         }
 
-        echo json_encode($list_histori_transaksi);
+        $list_histori_transaksi_updated = $this->paymentService->getAllHistoryTransaksi($_POST['nim']);
+
+        echo json_encode($list_histori_transaksi_updated);
     }
 
     public function bayarTagihan(): void

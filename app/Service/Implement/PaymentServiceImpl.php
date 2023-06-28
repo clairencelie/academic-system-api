@@ -2,6 +2,7 @@
 
 namespace Clairence\Service\Implement;
 
+use Clairence\Entity\ItemDetail;
 use Clairence\Entity\PaymentRequest;
 use Clairence\Entity\PaymentResponse;
 use Clairence\Entity\RincianTagihan;
@@ -101,6 +102,15 @@ class PaymentServiceImpl implements PaymentServiceInterface
             'Content-type' => 'application/json'
         );
 
+        // $listRincianTagihan = $this->paymentRepository->getRincianTagihan($id_pembayaran_kuliah);
+
+        // $item_details = [];
+
+        // foreach ($listRincianTagihan as $rincianTagihan) {
+        //     $item_detail = ItemDetail::createItemDetail($rincianTagihan);
+        //     $item_details[] = $item_detail->jsonSerialize();
+        // }
+
         $payload = PaymentDetailEncoder::encode($paymentRequest->getOrderId(), $paymentRequest->getGrossAmount(), $mhs);
 
         $client = new Client();
@@ -111,6 +121,13 @@ class PaymentServiceImpl implements PaymentServiceInterface
         ]);
 
         $decoded_body = (array) json_decode((string) $response->getBody());
+
+        try {
+            PaymentResponse::createPaymentResponse($decoded_body);
+        } catch (\TypeError $e) {
+            echo json_encode(json_decode((string) $response->getBody()));
+            exit();
+        }
 
         $paymentResponse = PaymentResponse::createPaymentResponse($decoded_body);
 

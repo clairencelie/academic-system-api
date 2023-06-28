@@ -66,8 +66,8 @@ class TahunAkademikController
                         $tagihanUangMukaKrs = new TagihanPerkuliahan(
                             idPembayaranKuliah: UniqueIdGenerator::generate_uuid(),
                             nim: $mhs['nim'],
-                            totalTagihan: '1004000',
-                            sisaPembayaran: '1004000',
+                            totalTagihan: '1004000', // 1004000
+                            sisaPembayaran: '1004000', // 1004000
                             statusPembayaran: 'belum_bayar',
                             kategori: 'Uang Muka Pengisian KRS',
                             metodePembayaran: 'full',
@@ -87,8 +87,8 @@ class TahunAkademikController
                                     idTagihanPerkuliahan: $tagihanDPKrsMhs->getIdTagihanPerkuliahan(),
                                     item: 'Uang Muka KRS',
                                     jumlahItem: '1',
-                                    hargaItem: '1000000',
-                                    totalHargaItem: '1000000',
+                                    hargaItem: '1000000', // 1000000
+                                    totalHargaItem: '1000000', // 1000000
                                 );
 
                                 // Rincian Biaya Admin
