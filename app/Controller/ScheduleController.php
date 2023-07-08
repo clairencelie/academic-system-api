@@ -20,44 +20,65 @@ class ScheduleController
 
     public function getStudentSchedules(): void
     {
-        if (!isset($_POST["id"]) || !isset($_POST["day"])) {
+        if (!isset($_POST["id"]) || !isset($_POST["id_krs"]) || !isset($_POST["tahun_akademik"]) || !isset($_POST["semester"])) {
             http_response_code(400);
             exit();
         }
 
         $id = $_POST["id"];
-        $day = $_POST["day"];
+        $id_krs = $_POST["id_krs"];
+        $tahun_akademik = $_POST["tahun_akademik"];
+        $semester = $_POST["semester"];
 
-        $schedules = $this->service->findStudentSchedules($id, $day);
+        $schedules = $this->service->findStudentSchedules($id, $id_krs, $tahun_akademik, $semester);
 
         echo json_encode($schedules);
     }
 
     public function getLecturerSchedules(): void
     {
-        if (!isset($_POST["id"]) || !isset($_POST["day"])) {
+        if (!isset($_POST["id"]) || !isset($_POST["day"]) || !isset($_POST["tahun_akademik"]) || !isset($_POST["semester"])) {
             http_response_code(400);
             exit();
         }
 
         $id = $_POST["id"];
         $day = $_POST["day"];
+        $tahun_akademik = $_POST["tahun_akademik"];
+        $semester = $_POST["semester"];
 
-        $schedules = $this->service->findLecturerSchedules($id, $day);
+        $schedules = $this->service->findLecturerSchedules($id, $day, $tahun_akademik, $semester);
 
         echo json_encode($schedules);
     }
 
     public function getAllSchedule(): void
     {
-        $schedules = $this->service->findAllSchedule();
+        if (!isset($_POST["tahun_akademik"]) || !isset($_POST["semester"])) {
+            http_response_code(400);
+            exit();
+        }
+
+        $tahun_akademik = $_POST["tahun_akademik"];
+        $semester = $_POST["semester"];
+
+        $schedules = $this->service->findAllSchedule($tahun_akademik, $semester);
 
         echo json_encode($schedules);
     }
 
-    public function getSchedulesByDay(string $day): void
+    public function getSchedulesByDay(): void
     {
-        $schedules = $this->service->findAllSchedulesByDay($day);
+        if (!isset($_POST["day"]) || !isset($_POST["tahun_akademik"]) || !isset($_POST["semester"])) {
+            http_response_code(400);
+            exit();
+        }
+
+        $day = $_POST["day"];
+        $tahun_akademik = $_POST["tahun_akademik"];
+        $semester = $_POST["semester"];
+
+        $schedules = $this->service->findAllSchedulesByDay($day, $tahun_akademik, $semester);
 
         echo json_encode($schedules);
     }
@@ -70,6 +91,7 @@ class ScheduleController
         }
 
         $new_schedule = ScheduleRequest::createScheduleRequest((array) json_decode($_POST["new_schedule"]));
+        // $new_schedule = ScheduleRequest::createScheduleRequest($_POST["new_schedule"]);
 
         $condition = $this->service->addSchedule($new_schedule);
 
@@ -93,6 +115,7 @@ class ScheduleController
         }
 
         $new_schedule = ScheduleUpdate::createScheduleUpdate((array) json_decode($_POST["new_schedule"]));
+        // $new_schedule = ScheduleUpdate::createScheduleUpdate($_POST["new_schedule"]);
 
         $condition = $this->service->updateSchedule($new_schedule);
 
@@ -116,6 +139,7 @@ class ScheduleController
         }
 
         $condition = $this->service->removeSchedule((array) json_decode($_POST["schedule_id"]));
+        // $condition = $this->service->removeSchedule($_POST["schedule_id"]);
 
         if ($condition) {
             echo json_encode([

@@ -6,11 +6,14 @@ class LearningSubject
 {
     public function __construct(
         private string $id,
+        private string $id_mata_kuliah,
         private string $lecturer_id,
         private string $name,
         private string $credit,
         private string $grade,
         private string $type,
+        private string $tahun_akademik,
+        private string $semester,
     )
     {
     }
@@ -19,11 +22,14 @@ class LearningSubject
     {
         return new LearningSubject(
             $data["id_mata_kuliah"],
+            $data["id_mata_kuliah_master"],
             $data["id_dosen"],
             $data["nama_mata_kuliah"],
             $data["jumlah_sks"],
             $data["kelas"],
             $data["jenis"],
+            $data["tahun_akademik"],
+            $data["semester"],
         );
     }
 

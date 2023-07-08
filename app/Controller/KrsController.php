@@ -124,6 +124,7 @@ class KrsController
             }
         } catch (\Exception $e) {
             $this->pdo->rollBack();
+            http_response_code(409);
             echo json_encode(["message" => "Exception: {$e->getMessage()}"]);
         }
     }
@@ -169,6 +170,27 @@ class KrsController
             $this->pdo->rollBack();
             http_response_code(409);
             echo json_encode(["message" => $e->getMessage()]);
+        }
+    }
+
+    public function approveKrs(): void
+    {
+        if (!isset($_POST['id_krs'])) {
+            http_response_code(400);
+            exit();
+        }
+
+        $id_krs = $_POST['id_krs'];
+
+        if ($this->krs_service->approveKrs($id_krs)) {
+            echo json_encode([
+                "message" => "krs approved successfuly",
+            ]);
+        } else {
+            http_response_code(409);
+            echo json_encode([
+                "message" => "krs approve failed",
+            ]);
         }
     }
 
@@ -282,7 +304,7 @@ class KrsController
                                     hargaItem: '1300000',
                                     totalHargaItem: '1300000',
                                 );
-                                
+
                                 // Rincian Biaya Registrasi
                                 $rincianBiayaRegistrasi = new RincianTagihan(
                                     idTagihanPerkuliahan: $dataTagihanSemesterMhs->getIdTagihanPerkuliahan(),

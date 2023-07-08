@@ -37,14 +37,14 @@ class PaymentController
         $this->userRepo = new UserRepositoryImpl($this->pdo);
     }
 
-    public function midtransNotificationUpdate(): void
-    {
-        // Data dari notif post midtrans
-        $input = (array) (json_decode(file_get_contents("php://input")));
+    // public function midtransNotificationUpdate(): void
+    // {
+    //     // Data dari notif post midtrans
+    //     $input = (array) (json_decode(file_get_contents("php://input")));
 
-        // update data histori transaksi
+    //     // update data histori transaksi
 
-    }
+    // }
 
     public function getTagihanMahasiswa(): void
     {

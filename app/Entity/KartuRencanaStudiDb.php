@@ -7,6 +7,7 @@ class KartuRencanaStudiDB
     public function __construct(
         private string $id,
         private string $nim,
+        private string $id_dosen,
         private string $nama,
         private string $semester,
         private string $jurusan,
@@ -17,6 +18,7 @@ class KartuRencanaStudiDB
         private string $waktu_pengisian,
         private string $tahun_akademik,
         private string $commit,
+        private string $approve,
         private array $pilihan_mata_kuliah = [],
     ) {
     }
@@ -132,6 +134,7 @@ class KartuRencanaStudiDB
         return new KartuRencanaStudiDB(
             $data['id_krs'],
             $data['nim'],
+            $data['id_dosen'],
             $data['nama'],
             $data['semester'],
             $data['program_studi'],
@@ -142,6 +145,7 @@ class KartuRencanaStudiDB
             $data['waktu_pengisian'],
             $data['tahun_akademik'],
             $data['commit'],
+            $data['approve'],
         );
     }
 
@@ -160,5 +164,21 @@ class KartuRencanaStudiDB
         public function getNama(): string
         {
                 return $this->nama;
+        }
+
+        /**
+         * Get the value of id_dosen
+         */
+        public function getIdDosen(): string
+        {
+                return $this->id_dosen;
+        }
+
+        /**
+         * Get the value of approve
+         */
+        public function getApprove(): string
+        {
+                return $this->approve;
         }
 }

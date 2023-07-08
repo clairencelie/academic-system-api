@@ -46,6 +46,7 @@ class NilaiRepositoryImpl implements NilaiRepositoryInterface
                 mhs.nama,
                 mhs.jurusan,
                 nilai.id_mata_kuliah,
+                mk.id_mata_kuliah_master,
                 nilai.id_nilai,
                 nilai.kehadiran,
                 nilai.tugas,

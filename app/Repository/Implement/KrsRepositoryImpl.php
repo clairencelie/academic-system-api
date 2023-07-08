@@ -78,6 +78,26 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
         return false;
     }
 
+    public function approveKrs(string $id_krs): bool
+    {
+        $sql = <<<SQL
+            UPDATE kartu_rencana_studi
+            SET approve = 1
+            WHERE id_krs = :id_krs;
+        SQL;
+
+        $statement = $this->conn->prepare($sql);
+
+        $statement->bindParam('id_krs', $id_krs);
+
+        $statement->execute();
+
+        if ($statement->rowCount() > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public function setKrsSchedule(string $starts_date, string $ends_date, string $semester, string $academic_year): bool
     {
         $tanggal_mulai = date('Y-m-d', strtotime($starts_date));
@@ -110,6 +130,7 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
     public function createStudentKrs(KartuRencanaStudi $krs): bool
     {
         $nim = $krs->getNim();
+        $id_dosen = $krs->getIdDosen();
         $program_studi = $krs->getJurusan();
         $ips = $krs->getIps();
         $ipk = $krs->getIpk();
@@ -122,6 +143,7 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
         $sql = <<<SQL
             INSERT INTO kartu_rencana_studi (
                 nim,
+                id_dosen,
                 program_studi,
                 ips,
                 ipk,
@@ -132,6 +154,7 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
                 tahun_akademik
             ) VALUES (
                 :nim,
+                :id_dosen,
                 :program_studi,
                 :ips,
                 :ipk,
@@ -146,6 +169,7 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
         $statement = $this->conn->prepare($sql);
 
         $statement->bindParam('nim', $nim);
+        $statement->bindParam('id_dosen', $id_dosen);
         $statement->bindParam('program_studi', $program_studi);
         $statement->bindParam('ips', $ips);
         $statement->bindParam('ipk', $ipk);
@@ -199,6 +223,7 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
         $sql = <<<SQL
             SELECT krs.id_krs,
                     krs.nim,
+                    krs.id_dosen,
                     mahasiswa.nama,
                     krs.program_studi,
                     krs.ips,
@@ -208,7 +233,8 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
                     krs.semester,
                     krs.waktu_pengisian,
                     krs.tahun_akademik,
-                    krs.commit
+                    krs.commit,
+                    krs.approve
             FROM kartu_rencana_studi as krs
             JOIN mahasiswa ON (mahasiswa.nim = krs.nim)
             WHERE krs.nim = :nim;
@@ -257,11 +283,14 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
 
                     $sql = <<<SQL
                                     SELECT id_mata_kuliah as id,
+                                        id_mata_kuliah_master as id_mata_kuliah,
                                         id_dosen as lecturer_id,
                                         nama_mata_kuliah as name,
                                         jumlah_sks as credit,
                                         kelas as grade,
-                                        jenis as type
+                                        jenis as type,
+                                        tahun_akademik as tahun_akademik,
+                                        semester as semester
                                     FROM mata_kuliah 
                                     WHERE id_mata_kuliah = :id_mata_kuliah;
                                 SQL;
@@ -402,6 +431,7 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
         $sql = <<<SQL
             SELECT krs.id_krs,
                     krs.nim,
+                    krs.id_dosen,
                     mahasiswa.nama,
                     krs.program_studi,
                     krs.ips,
@@ -411,7 +441,8 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
                     krs.semester,
                     krs.waktu_pengisian,
                     krs.tahun_akademik,
-                    krs.commit
+                    krs.commit,
+                    krs.approve
             FROM kartu_rencana_studi as krs
             JOIN mahasiswa ON (mahasiswa.nim = krs.nim);
         SQL;
@@ -457,11 +488,14 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
 
                     $sql = <<<SQL
                                     SELECT id_mata_kuliah as id,
+                                        id_mata_kuliah_master as id_mata_kuliah,
                                         id_dosen as lecturer_id,
                                         nama_mata_kuliah as name,
                                         jumlah_sks as credit,
                                         kelas as grade,
-                                        jenis as type
+                                        jenis as type,
+                                        tahun_akademik as tahun_akademik,
+                                        semester as semester
                                     FROM mata_kuliah 
                                     WHERE id_mata_kuliah = :id_mata_kuliah;
                                 SQL;

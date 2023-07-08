@@ -15,58 +15,24 @@ class ScheduleServiceImpl implements ScheduleServiceInterface
     {
     }
 
-    public function findStudentSchedules(string $id, string $day): array
+    public function findStudentSchedules(string $id, string $id_krs, string $tahun_akademik, string $semester): array
     {
-        return $this->repository->getStudentSchedules($id, $day);
+        return $this->repository->getStudentSchedules($id, $id_krs, $tahun_akademik, $semester);
     }
 
-    public function findLecturerSchedules(string $id, string $day): array
+    public function findLecturerSchedules(string $id, string $day, string $tahun_akademik, string $semester): array
     {
-        return $this->repository->getLecturerSchedules($id, $day);
+        return $this->repository->getLecturerSchedules($id, $day, $tahun_akademik, $semester);
     }
 
-    public function findAllSchedule(): array
+    public function findAllSchedule(string $tahun_akademik, string $semester): array
     {
-        return $this->repository->getAllSchedule();
+        return $this->repository->getAllSchedule($tahun_akademik, $semester);
     }
 
-    public function findAllSchedulesByDay(string $day): array
+    public function findAllSchedulesByDay(string $day, string $tahun_akademik, string $semester): array
     {
-        $raw_schedules = $this->repository->getSchedulesByDay($day);
-
-        // modify dup schedule name
-        $no_dup_schedules = [];
-
-        foreach ($raw_schedules as $schedule) {
-            $index = array_search($schedule['learning_sub_name'], array_column($no_dup_schedules, 'learning_sub_name'));
-
-
-            if ($index === false) {
-                $no_dup_schedules[] = $schedule;
-            } else {
-                $isSameStartTime = $no_dup_schedules[$index]['starts_at'] == $schedule['starts_at'];
-                $isSameEndTime = $no_dup_schedules[$index]['ends_at'] == $schedule['ends_at'];
-                $isSameLecturer = $no_dup_schedules[$index]['lecturer_id'] == $schedule['lecturer_id'];
-
-                if ($isSameStartTime && $isSameEndTime && $isSameLecturer) {
-                    $no_dup_schedules[$index]['id'] = $no_dup_schedules[$index]['id'] . " / " . $schedule['id'];
-                    if ($no_dup_schedules[$index]['grade'] != $schedule['grade']) {
-
-                        if ($no_dup_schedules[$index]['grade'][1] == $schedule['grade'][1]) {
-                            $no_dup_schedules[$index]['grade'] = '0' . $no_dup_schedules[$index]['grade'][1] . 'MATS';
-                        } else {
-                            $no_dup_schedules[$index]['grade'] = $no_dup_schedules[$index]['grade'] . ' & ' . $schedule['grade'];
-                        }
-
-                        if ($no_dup_schedules[$index]['learning_sub_id'] != $schedule['learning_sub_id']) {
-                            $no_dup_schedules[$index]['learning_sub_id'] = $no_dup_schedules[$index]['learning_sub_id'] . " / " . $schedule['learning_sub_id'];
-                        }
-                    }
-                }
-            }
-        }
-
-        return $no_dup_schedules;
+        return $this->repository->getSchedulesByDay($day, $tahun_akademik, $semester);
     }
 
     public function addSchedule(ScheduleRequest $schedule): bool

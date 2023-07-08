@@ -32,10 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
 Router::add("POST", "/login", UserController::class, "login");
 
 // Get Student Schedules
-Router::add("POST", "/student/schedules", ScheduleController::class, "getStudentSchedules", [AuthMiddleware::class]);
+Router::add("POST", "/student/schedules", ScheduleController::class, "getStudentSchedules");
 
 // Get Lecturer Schedules
-Router::add("POST", "/lecturer/schedules", ScheduleController::class, "getLecturerSchedules", [AuthMiddleware::class]);
+Router::add("POST", "/lecturer/schedules", ScheduleController::class, "getLecturerSchedules");
 
 // Get User
 Router::add("GET", "/get_user/([0-9]*)", UserController::class, "getUser", [AuthMiddleware::class]);
@@ -47,22 +47,34 @@ Router::add("GET", "/mahasiswa/aktif", UserController::class, "getMahasiswaAktif
 Router::add("GET", "/lecturers", UserController::class, "getAllLecturer", [AuthMiddleware::class]);
 
 // Get Mata Kuliah
-Router::add("GET", "/learning_subjects", MataKuliahController::class, "getAllMataKuliah", [AuthMiddleware::class]);
+Router::add("GET", "/learning_subjects", MataKuliahController::class, "getAllMataKuliah");
+
+// Get Mata Kuliah
+Router::add("GET", "/master/matkul", MataKuliahController::class, "getAllMataKuliahMaster");
+
+// Create Mata Kuliah
+Router::add("POST", "/create/matkul", MataKuliahController::class, "createMataKuliah");
+
+// Create Mata Kuliah
+Router::add("POST", "/update/matkul", MataKuliahController::class, "updateMataKuliah");
+
+// Create Mata Kuliah
+Router::add("POST", "/delete/matkul", MataKuliahController::class, "deleteMataKuliah");
 
 // Get All Schedules
-Router::add("GET", "/all_schedules", ScheduleController::class, "getAllSchedule", [AuthMiddleware::class]);
+Router::add("POST", "/all_schedules", ScheduleController::class, "getAllSchedule");
 
 // Get Schedules by Day
-Router::add("GET", "/schedules/([a-zA-Z]*)", ScheduleController::class, "getSchedulesByDay", [AuthMiddleware::class]);
+Router::add("POST", "/schedules/day", ScheduleController::class, "getSchedulesByDay", [AuthMiddleware::class]);
 
 // Create New Schedule
-Router::add("POST", "/create/schedule", ScheduleController::class, "addSchedule", [AuthMiddleware::class]);
+Router::add("POST", "/create/schedule", ScheduleController::class, "addSchedule");
 
 // Update Schedule
-Router::add("POST", "/update/schedule", ScheduleController::class, "updateSchedule", [AuthMiddleware::class]);
+Router::add("POST", "/update/schedule", ScheduleController::class, "updateSchedule");
 
 // Delete Schedule
-Router::add("POST", "/delete/schedule", ScheduleController::class, "removeSchedule", [AuthMiddleware::class]);
+Router::add("POST", "/delete/schedule", ScheduleController::class, "removeSchedule");
 
 // Get Krs Schedule
 Router::add("GET", "/krs_schedule", KrsController::class, "getKrsSchedule", [AuthMiddleware::class]);
@@ -81,6 +93,9 @@ Router::add("GET", "/get/krs", KrsController::class, "getAllKrs");
 
 // commit krs
 Router::add("POST", "/commit/krs", KrsController::class, "commitKrs");
+
+// approve krs
+Router::add("POST", "/approve/krs", KrsController::class, "approveKrs");
 
 // update Krs
 Router::add("POST", "/update/krs", KrsController::class, "updateKrs");

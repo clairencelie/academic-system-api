@@ -6,6 +6,7 @@ class KartuRencanaStudi
 {
     public function __construct(
         private string $nim,
+        private string $id_dosen,
         private string $semester,
         private string $jurusan,
         private string $ips,
@@ -94,6 +95,7 @@ class KartuRencanaStudi
     {
         return new KartuRencanaStudi(
             $data['nim'],
+            $data['id_dosen'],
             $data['semester'],
             $data['program_studi'],
             $data['ips'],
@@ -111,4 +113,12 @@ class KartuRencanaStudi
 
         return $vars;
     }
+
+        /**
+         * Get the value of id_dosen
+         */
+        public function getIdDosen(): string
+        {
+                return $this->id_dosen;
+        }
 }

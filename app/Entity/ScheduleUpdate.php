@@ -13,6 +13,8 @@ class ScheduleUpdate
         private string $day,
         private string $room,
         private string $information,
+        private string $tahun_akademik,
+        private string $semester,
     ) {
     }
 
@@ -27,6 +29,8 @@ class ScheduleUpdate
             $data["day"],
             $data["room"],
             $data["information"],
+            $data["tahun_akademik"],
+            $data["semester"],
         );
     }
 
@@ -101,4 +105,20 @@ class ScheduleUpdate
     {
         return $this->id;
     }
+
+        /**
+         * Get the value of tahun_akademik
+         */
+        public function getTahunAkademik(): string
+        {
+                return $this->tahun_akademik;
+        }
+
+        /**
+         * Get the value of semester
+         */
+        public function getSemester(): string
+        {
+                return $this->semester;
+        }
 }

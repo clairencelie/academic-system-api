@@ -22,6 +22,8 @@ interface KrsRepositoryInterface
 
     public function commitKrs(string $id_krs): bool;
 
+    public function approveKrs(string $id_krs): bool;
+
     public function getAllKrs(): array;
     
     public function getStudentKrsBySemester(string $id, string $semester): array;
