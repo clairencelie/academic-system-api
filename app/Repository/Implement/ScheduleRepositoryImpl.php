@@ -137,7 +137,7 @@ class ScheduleRepositoryImpl implements ScheduleRepositoryInterface
             JOIN mata_kuliah ON (mata_kuliah.id_mata_kuliah = jadwal_perkuliahan.id_mata_kuliah)
             WHERE jadwal_perkuliahan.tahun_akademik = :tahun_akademik
             AND jadwal_perkuliahan.semester = :semester
-            ORDER BY jadwal_perkuliahan.hari DESC, mata_kuliah.nama_mata_kuliah ASC, mata_kuliah.kelas ASC;
+            ORDER BY jadwal_perkuliahan.hari DESC, jadwal_perkuliahan.waktu_mulai ASC, mata_kuliah.kelas ASC;
         SQL;
 
         $statement = $this->conn->prepare($sql);
