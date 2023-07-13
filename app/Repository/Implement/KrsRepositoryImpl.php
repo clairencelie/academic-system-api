@@ -98,6 +98,26 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
         return false;
     }
 
+    public function unApproveKrs(string $id_krs): bool
+    {
+        $sql = <<<SQL
+            UPDATE kartu_rencana_studi
+            SET approve = 0
+            WHERE id_krs = :id_krs;
+        SQL;
+
+        $statement = $this->conn->prepare($sql);
+
+        $statement->bindParam('id_krs', $id_krs);
+
+        $statement->execute();
+
+        if ($statement->rowCount() > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public function setKrsSchedule(string $starts_date, string $ends_date, string $semester, string $academic_year): bool
     {
         $tanggal_mulai = date('Y-m-d', strtotime($starts_date));

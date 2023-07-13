@@ -22,6 +22,8 @@ interface KrsServiceInterface
 
     public function approveKrs(string $id_krs): bool;
 
+    public function unApproveKrs(string $id_krs): bool;
+
     public function insertRincianKrs(string $id_krs, array $list_matkul): bool;
 
     public function getStudentKrs(string $id): array;

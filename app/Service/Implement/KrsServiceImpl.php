@@ -59,6 +59,11 @@ class KrsServiceImpl implements KrsServiceInterface
         return $this->krs_repository->approveKrs($id_krs);
     }
 
+    public function unApproveKrs(string $id_krs): bool
+    {
+        return $this->krs_repository->unApproveKrs($id_krs);
+    }
+
     public function getStudentKrs(string $id): array
     {
         return $this->krs_repository->getStudentKrs($id);

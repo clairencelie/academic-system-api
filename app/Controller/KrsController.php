@@ -194,6 +194,27 @@ class KrsController
         }
     }
 
+    public function unApproveKrs(): void
+    {
+        if (!isset($_POST['id_krs'])) {
+            http_response_code(400);
+            exit();
+        }
+
+        $id_krs = $_POST['id_krs'];
+
+        if ($this->krs_service->unApproveKrs($id_krs)) {
+            echo json_encode([
+                "message" => "krs unapproved successfuly",
+            ]);
+        } else {
+            http_response_code(409);
+            echo json_encode([
+                "message" => "krs unapprove failed",
+            ]);
+        }
+    }
+
     public function commitKrs(): void
     {
         if (!isset($_POST['id_krs'])) {

@@ -97,6 +97,9 @@ Router::add("POST", "/commit/krs", KrsController::class, "commitKrs");
 // approve krs
 Router::add("POST", "/approve/krs", KrsController::class, "approveKrs");
 
+// approve krs
+Router::add("POST", "/unapprove/krs", KrsController::class, "unapproveKrs");
+
 // update Krs
 Router::add("POST", "/update/krs", KrsController::class, "updateKrs");
 
