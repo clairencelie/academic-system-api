@@ -226,11 +226,11 @@ class KrsRepositoryImpl implements KrsRepositoryInterface
 
         $statement->execute();
 
-        if ($statement->rowCount() > 0) {
-            return true;
-        }
+        // if ($statement->rowCount() > 0) {
+        //     return true;
+        // }
 
-        return false;
+        return true;
     }
 
     public function getStudentKrs(string $nim): array

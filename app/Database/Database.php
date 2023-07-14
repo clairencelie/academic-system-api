@@ -10,7 +10,7 @@ class Database
     {
         $host = "localhost";
         $port = 3306;
-        $database = "akademik_stmik_dp_new_2"; // akademik_stmik_dp_new
+        $database = "sistem_akademik"; // akademik_stmik_dp_new
         $username = "root";
         $password = "";
 

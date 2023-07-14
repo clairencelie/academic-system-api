@@ -243,6 +243,7 @@ class KhsRepositoryImpl implements KhsRepositoryInterface
                 $sql = <<<SQL
                 SELECT nilai.id_mata_kuliah,
                         mk.nama_mata_kuliah,
+                        mk.id_mata_kuliah_master,
                         nilai.id_nilai,
                         nilai.kehadiran,
                         nilai.tugas,
