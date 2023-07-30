@@ -32,121 +32,118 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
 Router::add("POST", "/login", UserController::class, "login");
 
 // Get Student Schedules
-Router::add("POST", "/student/schedules", ScheduleController::class, "getStudentSchedules");
+Router::add("POST", "/student/schedules", ScheduleController::class, "getStudentSchedules", [AuthMiddleware::class]);
 
 // Get Lecturer Schedules
-Router::add("POST", "/lecturer/schedules", ScheduleController::class, "getLecturerSchedules");
+Router::add("POST", "/lecturer/schedules", ScheduleController::class, "getLecturerSchedules", [AuthMiddleware::class]);
 
 // Get User
 Router::add("GET", "/get_user/([0-9]*)", UserController::class, "getUser", [AuthMiddleware::class]);
 
 // Get mahasiswa aktif
-Router::add("GET", "/mahasiswa/aktif", UserController::class, "getMahasiswaAktif");
+Router::add("GET", "/mahasiswa/aktif", UserController::class, "getMahasiswaAktif", [AuthMiddleware::class]);
 
 // Get Lecturers
 Router::add("GET", "/lecturers", UserController::class, "getAllLecturer", [AuthMiddleware::class]);
 
 // Get Mata Kuliah
-Router::add("GET", "/learning_subjects", MataKuliahController::class, "getAllMataKuliah");
+Router::add("GET", "/learning_subjects", MataKuliahController::class, "getAllMataKuliah", [AuthMiddleware::class]);
 
 // Get Mata Kuliah
-Router::add("GET", "/master/matkul", MataKuliahController::class, "getAllMataKuliahMaster");
+Router::add("GET", "/master/matkul", MataKuliahController::class, "getAllMataKuliahMaster", [AuthMiddleware::class]);
 
 // Create Mata Kuliah
-Router::add("POST", "/create/matkul", MataKuliahController::class, "createMataKuliah");
+Router::add("POST", "/create/matkul", MataKuliahController::class, "createMataKuliah", [AuthMiddleware::class]);
 
 // Create Mata Kuliah
-Router::add("POST", "/update/matkul", MataKuliahController::class, "updateMataKuliah");
+Router::add("POST", "/update/matkul", MataKuliahController::class, "updateMataKuliah", [AuthMiddleware::class]);
 
 // Create Mata Kuliah
-Router::add("POST", "/delete/matkul", MataKuliahController::class, "deleteMataKuliah");
+Router::add("POST", "/delete/matkul", MataKuliahController::class, "deleteMataKuliah", [AuthMiddleware::class]);
 
 // Get All Schedules
-Router::add("POST", "/all_schedules", ScheduleController::class, "getAllSchedule");
+Router::add("POST", "/all_schedules", ScheduleController::class, "getAllSchedule", [AuthMiddleware::class]);
 
 // Get Schedules by Day
 Router::add("POST", "/schedules/day", ScheduleController::class, "getSchedulesByDay", [AuthMiddleware::class]);
 
 // Create New Schedule
-Router::add("POST", "/create/schedule", ScheduleController::class, "addSchedule");
+Router::add("POST", "/create/schedule", ScheduleController::class, "addSchedule", [AuthMiddleware::class]);
 
 // Update Schedule
-Router::add("POST", "/update/schedule", ScheduleController::class, "updateSchedule");
+Router::add("POST", "/update/schedule", ScheduleController::class, "updateSchedule", [AuthMiddleware::class]);
 
 // Delete Schedule
-Router::add("POST", "/delete/schedule", ScheduleController::class, "removeSchedule");
+Router::add("POST", "/delete/schedule", ScheduleController::class, "removeSchedule", [AuthMiddleware::class]);
 
 // Get Krs Schedule
 Router::add("GET", "/krs_schedule", KrsController::class, "getKrsSchedule", [AuthMiddleware::class]);
 
-// // Set Krs Schedule
-// Router::add("POST", "/update/krs_schedule", KrsController::class, "setKrsSchedule");
-
 // create Krs 
-Router::add("POST", "/create/krs", KrsController::class, "createStudentKrs");
+Router::add("POST", "/create/krs", KrsController::class, "createStudentKrs", [AuthMiddleware::class]);
 
 // get Krs 
-Router::add("POST", "/krs", KrsController::class, "getStudentKrs");
+Router::add("POST", "/krs", KrsController::class, "getStudentKrs", [AuthMiddleware::class]);
 
 // get Krs 
-Router::add("GET", "/get/krs", KrsController::class, "getAllKrs");
+Router::add("GET", "/get/krs", KrsController::class, "getAllKrs", [AuthMiddleware::class]);
 
 // commit krs
-Router::add("POST", "/commit/krs", KrsController::class, "commitKrs");
+Router::add("POST", "/commit/krs", KrsController::class, "commitKrs", [AuthMiddleware::class]);
 
 // approve krs
-Router::add("POST", "/approve/krs", KrsController::class, "approveKrs");
+Router::add("POST", "/approve/krs", KrsController::class, "approveKrs", [AuthMiddleware::class]);
 
 // approve krs
-Router::add("POST", "/unapprove/krs", KrsController::class, "unapproveKrs");
+Router::add("POST", "/unapprove/krs", KrsController::class, "unapproveKrs", [AuthMiddleware::class]);
 
 // update Krs
-Router::add("POST", "/update/krs", KrsController::class, "updateKrs");
+Router::add("POST", "/update/krs", KrsController::class, "updateKrs", [AuthMiddleware::class]);
 
 // Get Transkrip 
-Router::add("POST", "/transkrip", KhsController::class, "getTranskrip");
+Router::add("POST", "/transkrip", KhsController::class, "getTranskrip", [AuthMiddleware::class]);
 
 // Get Transkrip 
-Router::add("POST", "/transkrip_terinci", KhsController::class, "getTranskripPerSemester");
+Router::add("POST", "/transkrip_terinci", KhsController::class, "getTranskripPerSemester", [AuthMiddleware::class]);
 
 // create Transkrip 
-Router::add("POST", "/create/transkrip", KhsController::class, "createTranskrip");
+Router::add("POST", "/create/transkrip", KhsController::class, "createTranskrip", [AuthMiddleware::class]);
 
 // create Khs 
-Router::add("POST", "/create/khs", KhsController::class, "createTranskrip");
+Router::add("POST", "/create/khs", KhsController::class, "createTranskrip", [AuthMiddleware::class]);
 
 // Get daftar matkul yang diajar oleh dosen 
-Router::add("POST", "/dosen/daftar_matkul", NilaiController::class, "getMataKuliah");
+Router::add("POST", "/dosen/daftar_matkul", NilaiController::class, "getMataKuliah", [AuthMiddleware::class]);
 
 // get daftar nilai matkul 
-Router::add("POST", "/mata_kuliah/nilai", NilaiController::class, "getDaftarNilai");
+Router::add("POST", "/mata_kuliah/nilai", NilaiController::class, "getDaftarNilai", [AuthMiddleware::class]);
 
 // get tahun akademik untuk list matkul dosen
-Router::add("GET", "/dosen/tahun_akademik", NilaiController::class, "getTahunAkademik");
+Router::add("GET", "/dosen/tahun_akademik", NilaiController::class, "getTahunAkademik", [AuthMiddleware::class]);
 
 // update nilai mhs (untuk dosen)
-Router::add("POST", "/nilai/mahasiswa", NilaiController::class, "updateNilai");
+Router::add("POST", "/nilai/mahasiswa", NilaiController::class, "updateNilai", [AuthMiddleware::class]);
 
 // Set tahun akademik
-Router::add("POST", "/set/tahun_akademik", TahunAkademikController::class, "setTahunAkademik");
+Router::add("POST", "/set/tahun_akademik", TahunAkademikController::class, "setTahunAkademik", [AuthMiddleware::class]);
 
 // Set jadwal KRS
-Router::add("POST", "/set/jadwal_krs", TahunAkademikController::class, "setJadwalKrs");
+Router::add("POST", "/set/jadwal_krs", TahunAkademikController::class, "setJadwalKrs", [AuthMiddleware::class]);
 
 // Get tagihan mahasiswa
-Router::add("POST", "/mahasiswa/tagihan", PaymentController::class, "getTagihanMahasiswa");
+Router::add("POST", "/mahasiswa/tagihan", PaymentController::class, "getTagihanMahasiswa", [AuthMiddleware::class]);
 
 // Get tagihan mahasiswa
-Router::add("POST", "/mahasiswa/tagihan/rincian", PaymentController::class, "getRincianTagihan");
+Router::add("POST", "/mahasiswa/tagihan/rincian", PaymentController::class, "getRincianTagihan", [AuthMiddleware::class]);
 
 // Create transaksi (Virtual account)
-Router::add("POST", "/charge", PaymentController::class, "bayarTagihan");
+Router::add("POST", "/charge", PaymentController::class, "bayarTagihan", [AuthMiddleware::class]);
 
 // Update status transaksi
-Router::add("POST", "/mahasiswa/pembayaran/status", PaymentController::class, "getStatusTransaksi");
+Router::add("POST", "/mahasiswa/pembayaran/status", PaymentController::class, "getStatusTransaksi", [AuthMiddleware::class]);
 
 // Get All list histori transaksi
-Router::add("POST", "/mahasiswa/transaksi/histori", PaymentController::class, "getAllHistoriTransaksi");
+Router::add("POST", "/mahasiswa/transaksi/histori", PaymentController::class, "getAllHistoriTransaksi", [AuthMiddleware::class]);
 
 // if Auth failed, send token refresh request to this route
 Router::add("POST", "/refresh", TokenController::class, "refresh");
